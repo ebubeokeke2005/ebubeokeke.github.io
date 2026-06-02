@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ebube Okeke</title>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Syne:wght@400;500;600;700&family=Inconsolata:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0a0a0a;
+    --black2: #111111;
+    --black3: #1a1a1a;
+    --charcoal: #242424;
+    --iron: #2e2e2e;
+    --mid: #444444;
+    --muted: #888888;
+    --subtle: #aaaaaa;
+    --light: #cccccc;
+    --offwhite: #e8e8e8;
+    --white: #f5f5f5;
+    --pure: #ffffff;
+    --accent: #d4c5a9;
+    --accent2: #b8a88a;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--offwhite);
+    font-family: 'Syne', sans-serif;
+    font-weight: 400;
+    line-height: 1.7;
+    overflow-x: hidden;
+    cursor: default;
+  }
+
+  /* grain overlay */
+  body::after {
+    content: '';
+    position: fixed; inset: 0; z-index: 9999;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    opacity: 0.35;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.1rem 4rem;
+    background: rgba(10,10,10,0.88);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--iron);
+  }
+  .nav-logo {
+    font-family: 'EB Garamond', serif;
+    font-size: 1.05rem; color: var(--white);
+    text-decoration: none; letter-spacing: 0.03em;
+  }
+  .nav-logo span { color: var(--accent); font-style: italic; }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    font-size: 0.7rem; font-weight: 500;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--muted); text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--white); }
+
+  section { position: relative; z-index: 1; }
+
+  /* HERO */
+  #hero {
+    min-height: 100vh;
+    display: flex; align-items: flex-end;
+    padding: 10rem 4rem 5rem;
+    border-bottom: 1px solid var(--iron);
+    background: var(--black);
+    position: relative; overflow: hidden;
+  }
+  #hero::before {
+    content: 'EO';
+    position: absolute; right: -2rem; bottom: -3rem;
+    font-family: 'EB Garamond', serif;
+    font-size: clamp(18rem, 30vw, 28rem);
+    font-weight: 600; color: transparent;
+    -webkit-text-stroke: 1px var(--iron);
+    line-height: 1; pointer-events: none;
+    user-select: none; z-index: 0;
+  }
+  .hero-inner { position: relative; z-index: 1; max-width: 900px; }
+  .hero-kicker {
+    font-family: 'Inconsolata', monospace;
+    font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 2rem;
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .hero-kicker::before { content: ''; width: 32px; height: 1px; background: var(--accent); display: inline-block; }
+  h1 {
+    font-family: 'EB Garamond', serif;
+    font-size: clamp(3rem, 7vw, 5.5rem);
+    line-height: 1.08; color: var(--white);
+    font-weight: 400; margin-bottom: 1.75rem;
+  }
+  h1 em { font-style: italic; color: var(--accent); }
+  .hero-sub {
+    font-size: 0.95rem; font-weight: 400; color: var(--muted);
+    max-width: 560px; margin-bottom: 1rem; line-height: 1.85;
+    font-family: 'Syne', sans-serif;
+  }
+  .hero-seeking {
+    font-family: 'Inconsolata', monospace;
+    font-size: 0.75rem; font-weight: 500;
+    color: var(--offwhite);
+    display: inline-block;
+    padding: 0.5rem 1.1rem;
+    margin-bottom: 2.5rem;
+    border: 1px solid var(--iron);
+    border-left: 2px solid var(--accent);
+    background: var(--black2);
+    letter-spacing: 0.02em;
+  }
+  .hero-cta { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn {
+    padding: 0.75rem 1.75rem;
+    font-family: 'Syne', sans-serif;
+    font-size: 0.76rem; font-weight: 600;
+    letter-spacing: 0.08em; text-decoration: none;
+    text-transform: uppercase;
+    transition: all 0.2s; cursor: pointer; border: none; display: inline-block;
+  }
+  .btn-primary { background: var(--white); color: var(--black); }
+  .btn-primary:hover { background: var(--accent); }
+  .btn-outline {
+    background: transparent; color: var(--light);
+    border: 1px solid var(--iron);
+  }
+  .btn-outline:hover { border-color: var(--light); color: var(--white); }
+
+  /* SHARED SECTION */
+  .section-wrap { padding: 6rem 4rem; max-width: 1100px; }
+  .section-label {
+    font-family: 'Inconsolata', monospace;
+    font-size: 0.67rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 0.7rem;
+    display: flex; align-items: center; gap: 0.8rem;
+  }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--iron); max-width: 50px; }
+  h2 {
+    font-family: 'EB Garamond', serif;
+    font-size: 2.1rem; font-weight: 400;
+    color: var(--white); margin-bottom: 3rem; line-height: 1.15;
+  }
+  p { color: var(--muted); font-size: 0.9rem; margin-bottom: 0.85rem; }
+
+  .section-divider { height: 1px; background: var(--iron); }
+
+  /* ABOUT */
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; }
+  .about-grid > div > p { color: var(--subtle); }
+  .skills-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-top: 0.5rem; }
+  .skill-chip {
+    font-family: 'Inconsolata', monospace; font-size: 0.7rem;
+    padding: 0.5rem 0.8rem;
+    border: 1px solid var(--iron); color: var(--subtle);
+    background: var(--black2); letter-spacing: 0.02em;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .skill-chip:hover { border-color: var(--accent2); color: var(--accent); }
+
+  /* TIMELINE */
+  .timeline-item {
+    display: grid; grid-template-columns: 130px 1fr;
+    gap: 3rem; padding: 2.25rem 0;
+    border-bottom: 1px solid var(--iron);
+  }
+  .timeline-item:first-child { padding-top: 0; }
+  .timeline-item:last-child { border-bottom: none; }
+  .timeline-date {
+    font-family: 'Inconsolata', monospace; font-size: 0.7rem;
+    color: var(--accent); letter-spacing: 0.04em;
+    line-height: 1.7; padding-top: 0.25rem;
+  }
+  .timeline-company {
+    font-size: 0.72rem; font-weight: 600; color: var(--mid);
+    text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.25rem;
+  }
+  .timeline-role {
+    font-family: 'EB Garamond', serif;
+    font-size: 1.25rem; color: var(--white);
+    margin-bottom: 0.9rem; font-weight: 400;
+  }
+  .timeline-desc { list-style: none; }
+  .timeline-desc li {
+    font-size: 0.87rem; color: var(--subtle);
+    padding-left: 1.25rem; margin-bottom: 0.5rem;
+    position: relative; line-height: 1.7;
+  }
+  .timeline-desc li::before {
+    content: '/'; position: absolute; left: 0;
+    color: var(--iron); font-family: 'Inconsolata', monospace;
+  }
+
+  /* PROJECTS */
+  .projects-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr);
+    gap: 1px; background: var(--iron);
+  }
+  .project-card {
+    padding: 2rem; background: var(--black);
+    transition: background 0.25s; position: relative; overflow: hidden;
+  }
+  .project-card:hover { background: var(--black2); }
+  .project-card::after {
+    content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+    height: 2px; background: var(--accent);
+    transform: scaleX(0); transform-origin: left; transition: transform 0.35s;
+  }
+  .project-card:hover::after { transform: scaleX(1); }
+  .project-num {
+    font-family: 'Inconsolata', monospace; font-size: 0.67rem;
+    color: var(--mid); letter-spacing: 0.12em; margin-bottom: 1rem;
+    text-transform: uppercase;
+  }
+  .project-status {
+    display: inline-block; font-family: 'Inconsolata', monospace;
+    font-size: 0.62rem; padding: 0.18rem 0.6rem;
+    border: 1px solid var(--iron); color: var(--muted);
+    margin-bottom: 0.7rem; letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  .project-status.active { border-color: var(--accent2); color: var(--accent); }
+  .project-title {
+    font-family: 'EB Garamond', serif;
+    font-size: 1.15rem; color: var(--white); font-weight: 400; margin-bottom: 0.7rem;
+  }
+  .project-desc { font-size: 0.84rem; color: var(--muted); margin-bottom: 1.25rem; line-height: 1.75; }
+  .project-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .tag {
+    font-family: 'Inconsolata', monospace; font-size: 0.63rem;
+    padding: 0.22rem 0.55rem; border: 1px solid var(--iron);
+    color: var(--mid); background: transparent; letter-spacing: 0.04em;
+  }
+
+  /* CERTS */
+  .cert-item {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.1rem 0; border-bottom: 1px solid var(--iron);
+  }
+  .cert-item:last-child { border-bottom: none; }
+  .cert-name { font-size: 0.9rem; color: var(--offwhite); font-weight: 500; }
+  .cert-issuer { font-size: 0.73rem; color: var(--muted); margin-top: 0.15rem; font-family: 'Inconsolata', monospace; }
+  .cert-year {
+    font-family: 'Inconsolata', monospace; font-size: 0.72rem;
+    color: var(--accent); letter-spacing: 0.08em;
+    white-space: nowrap; padding-left: 1rem;
+  }
+
+  /* ORGS */
+  .org-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1px; background: var(--iron);
+  }
+  .org-card {
+    padding: 2rem; background: var(--black);
+    transition: background 0.25s;
+  }
+  .org-card:hover { background: var(--black2); }
+  .org-abbr {
+    font-family: 'EB Garamond', serif; font-size: 2rem;
+    color: var(--iron); margin-bottom: 0.75rem; line-height: 1;
+    font-weight: 600;
+  }
+  .org-name { font-size: 0.92rem; font-weight: 600; color: var(--white); margin-bottom: 0.2rem; }
+  .org-full {
+    font-family: 'Inconsolata', monospace; font-size: 0.68rem;
+    color: var(--accent); margin-bottom: 0.7rem; letter-spacing: 0.04em;
+  }
+  .org-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.7; }
+
+  /* HOBBIES */
+  .hobbies-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1px; background: var(--iron);
+  }
+  .hobby-card {
+    padding: 1.75rem; background: var(--black);
+    transition: background 0.25s;
+  }
+  .hobby-card:hover { background: var(--black2); }
+  .hobby-glyph {
+    font-family: 'Inconsolata', monospace;
+    font-size: 1.5rem; color: var(--iron); margin-bottom: 0.75rem;
+    line-height: 1;
+  }
+  .hobby-title { font-size: 0.88rem; font-weight: 600; color: var(--white); margin-bottom: 0.4rem; }
+  .hobby-detail { font-size: 0.8rem; color: var(--muted); line-height: 1.7; }
+
+  /* CONTACT */
+  #contact {
+    padding: 7rem 4rem 8rem; text-align: center;
+    border-top: 1px solid var(--iron);
+    background: var(--black);
+  }
+  #contact h2 { margin-bottom: 0.75rem; }
+  #contact > p { max-width: 480px; margin: 0 auto 3rem; color: var(--muted); }
+  .contact-links { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+  .contact-link {
+    font-family: 'Inconsolata', monospace; font-size: 0.75rem;
+    letter-spacing: 0.06em; color: var(--light); text-transform: uppercase;
+    text-decoration: none; padding: 0.65rem 1.4rem;
+    border: 1px solid var(--iron); background: transparent;
+    transition: all 0.2s;
+  }
+  .contact-link:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* FOOTER */
+  footer {
+    padding: 1.5rem 4rem;
+    border-top: 1px solid var(--iron);
+    display: flex; justify-content: space-between; align-items: center;
+    background: var(--black2); position: relative; z-index: 1;
+  }
+  footer span { font-family: 'Inconsolata', monospace; font-size: 0.68rem; color: var(--mid); }
+
+  /* FADE IN */
+  .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.65s ease, transform 0.65s ease; }
+  .fade-in.visible { opacity: 1; transform: none; }
+
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    .section-wrap { padding: 4rem 1.5rem; }
+    #hero { padding: 7rem 1.5rem 4rem; }
+    .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .timeline-item { grid-template-columns: 1fr; gap: 0.3rem; }
+    #contact { padding: 4rem 1.5rem 5rem; }
+    footer { padding: 1.5rem; flex-direction: column; gap: 0.4rem; text-align: center; }
+    #hero::before { display: none; }
+    .hobbies-grid { grid-template-columns: 1fr; }
+    .projects-grid { grid-template-columns: 1fr; }
+    .org-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="#hero">Ebube <span>Okeke</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#certs">Certs</a></li>
+    <li><a href="#organizations">Organizations</a></li>
+    <li><a href="#volunteering">Volunteering</a></li>
+    <li><a href="#hobbies">Hobbies</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-inner">
+    <div class="hero-kicker">Biotechnology · University of Houston · Class of 2027</div>
+    <h1>Ebube Okeke<br><em>Biology meets engineering.</em></h1>
+    <p class="hero-sub">Biotechnology student with hands-on QC research experience at a clinical-stage biotech, CAD design skills, and a growing foundation in medical device development. Based in Houston, TX.</p>
+    <div class="hero-seeking">Seeking internship and research opportunities in medical device development, biotech R&D, and clinical research engineering</div>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="#projects">View My Work</a>
+      <a class="btn btn-outline" href="Ebube_Okeke_Resume_Final.pdf" target="_blank">Download Resume</a>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ABOUT -->
+<section id="about" class="fade-in">
+  <div class="section-wrap about-grid">
+    <div>
+      <p class="section-label">Background</p>
+      <h2>Lab skills meet design thinking</h2>
+      <p>I'm a Biotechnology student at the University of Houston (Class of 2027), currently working as a QC Research Associate Assistant at Immatics, a clinical-stage biopharmaceutical company inside the Texas Medical Center.</p>
+      <p>My goal is to break into medical device development or biotech R&D, combining wet-lab experience with CAD design, computational tools, and a genuine interest in how technology improves patient outcomes.</p>
+      <p>I'm actively seeking internship and university research opportunities where I can contribute, learn, and grow within a team working on meaningful problems in healthcare.</p>
+      <a class="btn btn-outline" href="#contact" style="margin-top:1.25rem; font-size:0.72rem; display:inline-block;">Get in touch</a>
+    </div>
+    <div>
+      <p class="section-label">Technical Skills</p>
+      <div class="skills-grid">
+        <div class="skill-chip">Mammalian Cell Culture</div>
+        <div class="skill-chip">Aseptic Technique</div>
+        <div class="skill-chip">PCR / Gel Electrophoresis</div>
+        <div class="skill-chip">Light Microscopy</div>
+        <div class="skill-chip">Plate Reader Assays</div>
+        <div class="skill-chip">Spectrophotometry</div>
+        <div class="skill-chip">SolidWorks</div>
+        <div class="skill-chip">Fusion 360</div>
+        <div class="skill-chip">AutoCAD</div>
+        <div class="skill-chip">Python</div>
+        <div class="skill-chip">MATLAB</div>
+        <div class="skill-chip">Microsoft Excel</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- EXPERIENCE -->
+<section id="experience" class="fade-in">
+  <div class="section-wrap">
+    <p class="section-label">Work History</p>
+    <h2>Experience</h2>
+    <div class="timeline">
+
+      <div class="timeline-item">
+        <div class="timeline-date">May 2025<br>Present</div>
+        <div>
+          <p class="timeline-company">Immatics · Houston, TX</p>
+          <p class="timeline-role">QC Research Associate Assistant</p>
+          <ul class="timeline-desc">
+            <li>Executed 5+ daily QC assays (plate reader, spectrophotometer, light microscopy) across sterile mammalian cell culture workflows, achieving zero contamination events over 4 weeks.</li>
+            <li>Documented assay deviations and protocol troubleshooting in Microsoft Office within same-day turnaround, directly supporting regulatory submission compliance across an active QC pipeline.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-date">Aug 2024<br>Jan 2026</div>
+        <div>
+          <p class="timeline-company">Johnson &amp; Johnson MedTech · Forage Virtual</p>
+          <p class="timeline-role">Digital Surgical Solutions Simulation</p>
+          <ul class="timeline-desc">
+            <li>Diagnosed response-time errors in a robotic surgical arm using Python and Excel, pinpointing software root causes and reducing debug cycle time by prioritizing 1 critical control fix.</li>
+            <li>Designed 3+ mock surgical components in SolidWorks and mapped robotic workflows, gaining proficiency in medical device design and digital process modeling.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-date">Jun 2023<br>Aug 2024</div>
+        <div>
+          <p class="timeline-company">Chick-fil-A Bella Terra · Houston, TX</p>
+          <p class="timeline-role">Team Member</p>
+          <ul class="timeline-desc">
+            <li>Sustained 98% cash handling accuracy across 500+ transactions per hour; identified bottlenecks and contributed process improvements that measurably reduced customer wait times.</li>
+            <li>Trained new team members on POS systems and service protocols; coordinated across stations during high-volume shifts, building cross-functional communication under pressure.</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- PROJECTS -->
+<section id="projects" class="fade-in">
+  <div class="section-wrap">
+    <p class="section-label">Portfolio</p>
+    <h2>Projects</h2>
+    <div class="projects-grid">
+
+      <div class="project-card">
+        <p class="project-num">01 / CAD Design</p>
+        <span class="project-status active">In Progress</span>
+        <p class="project-title">Desktop Bioreactor — Gene Therapy Bioprocessing</p>
+        <p class="project-desc">Designing a compact desktop bioreactor in Fusion 360 to model gene therapy bioprocessing workflows and lab-scale manufacturing constraints. CAD concept includes vessel geometry, component layout, and fluid-handling integration points optimized for 3D-print fabrication.</p>
+        <div class="project-tags">
+          <span class="tag">Fusion 360</span>
+          <span class="tag">CAD</span>
+          <span class="tag">Bioprocessing</span>
+          <span class="tag">Design for Manufacturing</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <p class="project-num">02 / Simulation</p>
+        <span class="project-status">Completed</span>
+        <p class="project-title">Surgical Robotic Arm — Root Cause Analysis</p>
+        <p class="project-desc">Analyzed delayed responses in a robotic surgical arm using Python and Excel as part of the J&amp;J MedTech Forage simulation. Identified software-level root causes, clarified system requirements, and documented recommendations to prioritize control software fixes.</p>
+        <div class="project-tags">
+          <span class="tag">Python</span>
+          <span class="tag">SolidWorks</span>
+          <span class="tag">Robotics</span>
+          <span class="tag">Root Cause Analysis</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <p class="project-num">03 / Lab</p>
+        <span class="project-status">Completed</span>
+        <p class="project-title">Unknown Bacterial Identification</p>
+        <p class="project-desc">Applied 7 biochemical assays (SIM, citrate, MR-VP, urea, carbohydrate fermentation) alongside Gram staining and streak isolation to identify an unknown bacterium as Klebsiella. Differentiated from Enterobacter by cross-referencing morphological and biochemical data.</p>
+        <div class="project-tags">
+          <span class="tag">Microbiology</span>
+          <span class="tag">Biochemical Assays</span>
+          <span class="tag">Gram Staining</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <p class="project-num">04 / Coming Soon</p>
+        <span class="project-status">Planned — Summer 2026</span>
+        <p class="project-title">Arduino Biometric Sensor</p>
+        <p class="project-desc">Building a pulse oximeter or EMG sensor using Arduino as a hands-on biomedical engineering project. Will document design decisions, circuit diagrams, and results here.</p>
+        <div class="project-tags">
+          <span class="tag">Arduino</span>
+          <span class="tag">Sensors</span>
+          <span class="tag">Biomedical Engineering</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- CERTS -->
+<section id="certs" class="fade-in">
+  <div class="section-wrap">
+    <p class="section-label">Credentials</p>
+    <h2>Certifications</h2>
+    <div class="cert-list">
+      <div class="cert-item">
+        <div>
+          <p class="cert-name">Biomedical Eng. Responsible Conduct of Research</p>
+          <p class="cert-issuer">CITI Program</p>
+        </div>
+        <span class="cert-year">2026</span>
+      </div>
+      <div class="cert-item">
+        <div>
+          <p class="cert-name">Biosafety Officer Training</p>
+          <p class="cert-issuer">CITI Program</p>
+        </div>
+        <span class="cert-year">2026</span>
+      </div>
+      <div class="cert-item">
+        <div>
+          <p class="cert-name">Research Security Training</p>
+          <p class="cert-issuer">CITI Program</p>
+        </div>
+        <span class="cert-year">2026</span>
+      </div>
+      <div class="cert-item">
+        <div>
+          <p class="cert-name">MATLAB Onramp</p>
+          <p class="cert-issuer">MathWorks</p>
+        </div>
+        <span class="cert-year">2026</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ORGANIZATIONS -->
+<section id="organizations" class="fade-in">
+  <div class="section-wrap">
+    <p class="section-label">Campus Involvement</p>
+    <h2>Organizations</h2>
+    <div class="org-grid">
+
+      <div class="org-card">
+        <div class="org-abbr">NSBE</div>
+        <p class="org-name">National Society of Black Engineers</p>
+        <p class="org-full">UH Chapter</p>
+        <p class="org-desc">One of the largest student-managed organizations in the US dedicated to the academic and professional success of Black engineers. Provides mentorship, networking, and career development across STEM.</p>
+      </div>
+
+      <div class="org-card">
+        <div class="org-abbr">BME</div>
+        <p class="org-name">Biomedical Engineering Club</p>
+        <p class="org-full">University of Houston</p>
+        <p class="org-desc">Student organization bridging biology, medicine, and engineering through workshops, guest speakers, and collaborative projects focused on medical device design and research opportunities.</p>
+      </div>
+
+      <div class="org-card">
+        <div class="org-abbr">ROB</div>
+        <p class="org-name">Robotics Club</p>
+        <p class="org-full">University of Houston</p>
+        <p class="org-desc">Hands-on club designing, building, and programming robotic systems. Directly aligns with interests in medical robotics, surgical systems, and automation in biotech and medical devices.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- VOLUNTEERING -->
+<section id="volunteering" class="fade-in">
+  <div class="section-wrap">
+    <p class="section-label">Community Impact</p>
+    <h2>Volunteering</h2>
+    <div class="timeline">
+
+      <div class="timeline-item">
+        <div class="timeline-date">Houston, TX<br>Ongoing</div>
+        <div>
+          <p class="timeline-company">Houston Food Bank · Houston, TX</p>
+          <p class="timeline-role">Volunteer</p>
+          <ul class="timeline-desc">
+            <li>Sorted, packaged, and distributed food ensuring efficiency and accuracy in serving thousands of individuals in need across the Houston area.</li>
+            <li>Strengthened logistics and teamwork skills by working in a fast-paced, high-volume environment alongside a large volunteer team.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-date">Rosenberg, TX<br>Aug 2025</div>
+        <div>
+          <p class="timeline-company">Rosenberg-Richmond Helping Hand · Rosenberg, TX</p>
+          <p class="timeline-role">Team Leader</p>
+          <ul class="timeline-desc">
+            <li>Led a volunteer team supporting 10+ families per cycle in accessing community resources; tracked 100% of cases and follow-up actions in Excel across multiple community partners.</li>
+            <li>Developed outreach strategies to promote equitable healthcare access, increasing resource utilization among underserved populations.</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- HOBBIES -->
+<section id="hobbies" class="fade-in">
+  <div class="section-wrap">
+    <p class="section-label">Outside the Lab</p>
+    <h2>Interests</h2>
+    <div class="hobbies-grid">
+
+      <div class="hobby-card">
+        <div class="hobby-glyph">[01]</div>
+        <p class="hobby-title">Music</p>
+        <p class="hobby-detail">Wide range — J. Cole's lyricism, classical jazz improvisation, and the introspective sound of Lucki. Music is a way to decompress, stay creative, and shift perspective.</p>
+      </div>
+
+      <div class="hobby-card">
+        <div class="hobby-glyph">[02]</div>
+        <p class="hobby-title">Reading</p>
+        <p class="hobby-detail">Currently rereading Project Hail Mary by Andy Weir. Drawn to books spanning science, biotech, and personal development.</p>
+      </div>
+
+      <div class="hobby-card">
+        <div class="hobby-glyph">[03]</div>
+        <p class="hobby-title">Podcasts</p>
+        <p class="hobby-detail">Focused on biotech, medical device innovation, and life sciences. A consistent way to stay informed beyond the classroom.</p>
+      </div>
+
+      <div class="hobby-card">
+        <div class="hobby-glyph">[04]</div>
+        <p class="hobby-title">Weightlifting</p>
+        <p class="hobby-detail">Consistent training built around discipline and incremental progress — a mindset that carries into long lab days and high-pressure environments.</p>
+      </div>
+
+      <div class="hobby-card">
+        <div class="hobby-glyph">[05]</div>
+        <p class="hobby-title">Running</p>
+        <p class="hobby-detail">A way to clear the mind and build endurance. Complements weightlifting and helps maintain mental stamina for demanding academic and research work.</p>
+      </div>
+
+      <div class="hobby-card">
+        <div class="hobby-glyph">[06]</div>
+        <p class="hobby-title">CAD and Drawing</p>
+        <p class="hobby-detail">Use Procreate to sketch design concepts and break down mechanical ideas visually before translating them into Fusion 360 and SolidWorks.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- CONTACT -->
+<section id="contact">
+  <p class="section-label" style="justify-content:center;">Get in Touch</p>
+  <h2>Open to opportunities</h2>
+  <p>Actively seeking internships and research positions in medical device development, biotech R&D, and clinical research. Based in Houston, TX — available for on-site, hybrid, or remote roles.</p>
+  <div class="contact-links">
+    <a class="contact-link" href="mailto:gokeke05@gmail.com">gokeke05@gmail.com</a>
+    <a class="contact-link" href="https://www.linkedin.com/in/ebube-okeke-11ab94379/" target="_blank">LinkedIn</a>
+    <a class="contact-link" href="Ebube_Okeke_Resume_Final.pdf" target="_blank">Resume PDF</a>
+  </div>
+</section>
+
+<footer>
+  <span>Ebube Okeke · Houston, TX</span>
+  <span>University of Houston · Biotechnology · Class of 2027</span>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
