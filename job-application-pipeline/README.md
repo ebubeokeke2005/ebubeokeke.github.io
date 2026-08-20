@@ -93,14 +93,17 @@ Both Gmail and Sheets access go through one OAuth client.
 - `pipeline/resume.py` — sends your master resume's existing bullets (by
   section) and the job description to Claude, which may only rephrase and
   reorder them — never invent metrics or experience — and echoes the JD's
-  action verbs where it's accurate to do so.
+  action verbs where it's accurate to do so. It also picks up to 3 verbatim,
+  metric-bearing bullets and writes a short "why I'm a fit" paragraph
+  grounded only in your existing experience, for use in outreach emails.
 - `pipeline/pdf.py` — converts the tailored `.docx` to PDF via headless
   LibreOffice.
 - `pipeline/contacts.py` — searches Apollo for a recruiter, a hiring manager
   for `TARGET_ROLE`, and a department head at the company.
-- `pipeline/gmail_draft.py` — creates a Gmail **draft** per contact with a
-  short personalized note and the tailored PDF attached. Nothing is ever
-  sent automatically — review and send from Gmail yourself.
+- `pipeline/gmail_draft.py` — creates a Gmail **draft** per contact using the
+  highlights and fit paragraph from `resume.py` (subject: `<role> application
+  - <your name>`), with the tailored PDF attached. Nothing is ever sent
+  automatically — review and send from Gmail yourself.
 - `pipeline/sheets_log.py` — appends a row (date, company, role, URL,
   contacts found, status) to your tracking sheet.
 

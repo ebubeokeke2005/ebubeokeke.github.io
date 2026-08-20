@@ -37,17 +37,17 @@ def main() -> int:
     print(f"  Description: {len(posting.description)} characters")
 
     print("Tailoring resume with Claude...")
-    tailored_docx = tailor_resume(
+    tailored = tailor_resume(
         master_resume_path=config.master_resume_path,
         job_description=posting.description,
         company=posting.company,
         api_key=config.anthropic_api_key,
         output_path=OUTPUT_DIR / f"resume_{posting.company.replace(' ', '_')}.docx",
     )
-    print(f"  Tailored resume: {tailored_docx}")
+    print(f"  Tailored resume: {tailored.docx_path}")
 
     print("Rendering PDF with LibreOffice...")
-    resume_pdf = render_pdf(tailored_docx)
+    resume_pdf = render_pdf(tailored.docx_path)
     print(f"  PDF: {resume_pdf}")
 
     print(f"Searching Apollo for contacts at {posting.company}...")
@@ -66,9 +66,10 @@ def main() -> int:
         contacts=contacts,
         your_name=config.your_name,
         your_email=config.your_email,
-        company=posting.company,
         role=config.target_role,
         resume_pdf_path=resume_pdf,
+        email_highlights=tailored.email_highlights,
+        fit_paragraph=tailored.fit_paragraph,
     )
     print(f"  Created {len(draft_ids)} draft(s). Review and send them from Gmail yourself.")
 

@@ -4,6 +4,7 @@ Only rephrases and reorders bullets that already exist in the master resume.
 Never invents metrics, skills, or experience.
 """
 import json
+from dataclasses import dataclass
 from pathlib import Path
 
 from anthropic import Anthropic
@@ -11,8 +12,9 @@ from docx import Document
 
 _BULLET_STYLE_HINTS = ("list", "bullet")
 
-_SYSTEM_PROMPT = """You tailor resumes. You are given the bullets from a candidate's \
-master resume, grouped by section, and a target job description.
+_SYSTEM_PROMPT = """You tailor resumes and draft outreach material. You are given the \
+bullets from a candidate's master resume, grouped by section, and a target job \
+description.
 
 Rules (do not break these):
 1. Never invent, exaggerate, or add metrics, skills, tools, or experience that \
@@ -24,9 +26,18 @@ bullets within a section to foreground the most relevant ones.
 describes what the bullet already says.
 4. Do not merge, split, or delete bullets. Every input bullet must appear \
 exactly once in the output, for the same section.
+5. Separately, pick up to 3 of the ORIGINAL (unrevised) input bullets that \
+contain a concrete number or metric and are most relevant to the job \
+description. Quote them verbatim, character-for-character as given — do not \
+edit them here. If fewer than 3 input bullets contain a number, return fewer.
+6. Write a 2-3 sentence "fit paragraph" connecting the candidate's existing, \
+given experience to what the job description asks for. It must only \
+reference things actually present in the given bullets — no fabrication.
 
 Return ONLY JSON of the form:
-{"sections": [{"section": "<name>", "bullets": [{"original_index": <int>, "text": "<revised text>"}, ...]}]}
+{"sections": [{"section": "<name>", "bullets": [{"original_index": <int>, "text": "<revised text>"}, ...]}],
+ "email_highlights": ["<verbatim bullet 1>", ...],
+ "fit_paragraph": "<2-3 sentences>"}
 """
 
 
@@ -113,7 +124,14 @@ def _apply_revisions(doc: Document, revisions: dict) -> Document:
     return doc
 
 
-def tailor_resume(master_resume_path: Path, job_description: str, company: str, api_key: str, output_path: Path) -> Path:
+@dataclass
+class TailoredResume:
+    docx_path: Path
+    email_highlights: list[str]
+    fit_paragraph: str
+
+
+def tailor_resume(master_resume_path: Path, job_description: str, company: str, api_key: str, output_path: Path) -> TailoredResume:
     client = Anthropic(api_key=api_key)
     doc = Document(str(master_resume_path))
 
@@ -129,4 +147,9 @@ def tailor_resume(master_resume_path: Path, job_description: str, company: str, 
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
     tailored_doc.save(str(output_path))
-    return output_path
+
+    return TailoredResume(
+        docx_path=output_path,
+        email_highlights=revisions.get("email_highlights", []),
+        fit_paragraph=revisions.get("fit_paragraph", ""),
+    )
