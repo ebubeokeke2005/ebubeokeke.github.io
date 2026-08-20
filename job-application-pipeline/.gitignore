@@ -1,0 +1,6 @@
+.env
+google_oauth_client.json
+google_token.json
+output/
+__pycache__/
+*.pyc
