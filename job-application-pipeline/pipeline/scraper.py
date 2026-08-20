@@ -1,4 +1,5 @@
 """Scrapes a job posting URL for the job description text and company name."""
+import os
 from dataclasses import dataclass
 
 from playwright.sync_api import sync_playwright
@@ -66,7 +67,10 @@ def _guess_company(page) -> str:
 
 def scrape_job_posting(url: str) -> JobPosting:
     with sync_playwright() as playwright:
-        browser = playwright.chromium.launch(headless=True)
+        # Allows pointing at a pre-installed Chromium binary (e.g. in sandboxed
+        # environments where `playwright install` can't fetch a browser).
+        executable_path = os.environ.get("PLAYWRIGHT_CHROMIUM_PATH")
+        browser = playwright.chromium.launch(headless=True, executable_path=executable_path)
         page = browser.new_page()
         page.goto(url, wait_until="networkidle", timeout=30000)
 
