@@ -42,7 +42,16 @@ Return ONLY JSON of the form:
 
 
 def _iter_paragraphs_with_sections(doc: Document):
+    """Groups bullets by contiguous run under the same subheading (e.g. one
+    job or one project), never across a subheading/date-line boundary — a
+    resume section like PROJECTS or EXPERIENCE holds several such runs, and
+    reordering across them would scramble bullets out from under the wrong
+    job/project.
+    """
     current_section = "General"
+    current_subheading = ""
+    group_key = None
+    in_bullet_run = False
     for index, paragraph in enumerate(doc.paragraphs):
         style_name = (paragraph.style.name or "").lower()
         text = paragraph.text.strip()
@@ -54,9 +63,17 @@ def _iter_paragraphs_with_sections(doc: Document):
         is_bullet = any(hint in style_name for hint in _BULLET_STYLE_HINTS)
         if is_heading:
             current_section = text
+            current_subheading = ""
+            in_bullet_run = False
             continue
         if is_bullet:
-            yield index, current_section, text
+            if not in_bullet_run:
+                group_key = f"{current_section} :: {current_subheading or index}"
+                in_bullet_run = True
+            yield index, group_key, text
+        else:
+            current_subheading = text
+            in_bullet_run = False
 
 
 def _extract_bullets(doc: Document) -> dict[str, list[tuple[int, str]]]:
